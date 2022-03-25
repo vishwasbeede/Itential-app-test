@@ -1,0 +1,91 @@
+{
+  "$id": "https://www.itential.com/schemas/properties.json/loggerProps.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "description": {
+      "$id": "/properties/description",
+      "type": "string",
+      "title": "Pronghorn Properties Tab Title",
+      "description": "Text shown for the logging tab in Pronghorn Properties view accessed from Pronghorn menu SETTINGS->PROPERTIES.",
+      "default": "Logging",
+      "examples": [
+        "Logging"
+      ]
+    },
+    "log_max_files": {
+      "$id": "/properties/log_max_files",
+      "type": "integer",
+      "title": "Number of Saved Log Files",
+      "description": "The number of old log files automatically preserved.",
+      "default": 0,
+      "minimum": 0,
+      "examples": [
+        100
+      ]
+    },
+    "log_max_file_size": {
+      "$id": "/properties/log_max_file_size",
+      "type": "integer",
+      "title": "Maximum Log File Size",
+      "description": "When Pronghorn's log file reaches this size in bytes, Pronghorn makes a backup and clears the log file's contents.",
+      "default": 0,
+      "minimum": 0,
+      "examples": [
+        104857600
+      ]
+    },
+    "log_timezone_offset": {
+      "$id": "/properties/log_timezone_offset",
+      "type": "number",
+      "title": "Timezone Offset",
+      "description": "A number specifying the offset from UTC. Pronghorn event logs will write the messages' timestamps using this property for the timezone.",
+      "default": 0,
+      "examples": [
+        -5,
+        1,
+        2.5
+      ]
+    },
+    "log_level": {
+      "$id": "/properties/log_level",
+      "enum": [ "error", "warn", "info", "debug", "trace", "spam" ],
+      "title": "Minimum Logged Severity Level",
+      "description": "Specifies which event messages will be logged. Messages with a severity level equal to or higher than this property are logged. Severity error is the most severe; severity spam is the least sever. Severity error events indicate a problem, such as a prematurely terminated program. Severity warn events are used for warning conditions; they may or may not indicate a problem. Severity info events are informational messages. Severity debug events are for debug-level messages, contain information normally of use only when debugging a program, and provide detailed information on messages between Pronghorn adapters and external systems. Severity trace events offer higher verbosity than debug, and they are uncommon. Severity spam events offer the highest verbosity and are rare.",
+      "default": "",
+      "examples": [
+        "debug"
+      ]
+    },
+    "log_directory": {
+      "$id": "/properties/log_directory",
+      "type": "string",
+      "title": "Log File Directory",
+      "description": "Directory, specified as an absolute path, where log files are saved.",
+      "default": "",
+      "examples": [
+        "/var/log/pronghorn"
+      ]
+    },
+    "log_filename": {
+      "$id": "/properties/log_filename",
+      "type": "string",
+      "title": "Log File",
+      "description": "Log file filename.",
+      "default": "",
+      "examples": [
+        "pronghorn.log"
+      ]
+    },
+    "console_level": {
+      "$id": "/properties/console_level",
+      "enum": [ "error", "warn", "info", "debug", "trace", "spam" ],
+      "title": "Minimum Console Severity Level",
+      "description": "Specifies which event messages will be written to the console. Messages with a severity level equal to or higher than this property are logged. Severity error is the most severe; severity spam is the least sever. Severity error events indicate a problem, such as a prematurely terminated program. Severity warn events are used for warning conditions; they may or may not indicate a problem. Severity info events are informational messages. Severity debug events are for debug-level messages, contain information normally of use only when debugging a program, and provide detailed information on messages between Pronghorn adapters and external systems. Severity trace events offer higher verbosity than debug, and they are uncommon. Severity spam events offer the highest verbosity and are rare.",
+      "default": "",
+      "examples": [
+        "warn"
+      ]
+    }
+  }
+}

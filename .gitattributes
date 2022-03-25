@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.txt text
+*.html text
+*.js text
+*.md text
+*.json text

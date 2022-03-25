@@ -1,0 +1,52 @@
+{ 
+    "id": "@ias/app-numbertools",
+    "title": "",
+    "export": "numberTools",
+    "displayName": "Number Tools",
+    "type": "Application",
+    "summary": "Basic number operations, findReminder",
+    "src": "app.js",
+    "encrypted": false,
+    "roles": [
+      "admin","everyone"
+    ],
+
+  "methods": [
+    
+    {
+      "name":"findReminder",
+      "description": "Find reminder of two input numbers",
+      "summary": "Find reminder of two input numbers",
+      "deprecated": false,
+      "roles": [ "admin","everyone"],
+      "input": [
+        {
+          "type": "number",
+          "name": "dividend",
+          "info": "Input as number for dividend",
+          "required": true,
+          "schema": {
+            "title": "dividend",
+            "type": "number"
+          }
+        },
+        {
+            "type": "number",
+            "name": "divisor",
+            "info": "Input number of divisor",
+            "required": true,
+            "schema": {
+              "title": "divisor",
+              "type": "number"
+            }
+          }
+      ],
+      "output": {
+        "name": "resultReminder",
+        "description": "Results in number",
+        "type": "number"
+      },
+      "task": true
+    }
+]
+}

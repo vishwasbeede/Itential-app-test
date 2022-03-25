@@ -1,0 +1,299 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique name of Pronghorn module. Most likely matches name in package.json.",
+      "pattern": "^(@[a-zA-Z0-9][-._a-zA-Z0-9]*/)?[a-zA-Z0-9][-._a-zA-Z0-9]*$"
+    },
+    "title": {
+      "type": "string",
+      "description": "Application's web API (REST or JSON RPC) namespace.",
+      "pattern": "^[a-zA-Z0-9][-_a-zA-Z0-9]*$"
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Name displayed for application in Workflow Builder's application drop-down. Compensates for differences between property export and property title."
+    },
+    "export": {
+      "type": "string",
+      "description": "Application's JavaScript namespace. Must match value of module.export assignement.",
+      "pattern": "^[a-zA-Z0-9][-_a-zA-Z0-9]*$"
+    },
+    "type": {
+      "enum": [
+        "Application",
+        "Broker",
+        "Adapter"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "description": "A summary of functions this application provides."
+    },
+    "src": {
+      "type": "string",
+      "description": "File reference to package's main JavaScript module, relative to directory where pronghorn.json and package.json files are stored.",
+      "pattern": "^[a-zA-Z0-9][.-_a-zA-Z0-9]*.(js|bin)$"
+    },
+    "encrypted": {
+      "type": "boolean",
+      "description": "When true, Pronghorn expects an encrypted main JavaScript module with a .bin filename extension. Otherwise Pronghorn expects an unencrypted main JavaScript module with a .js filename extension."
+    },
+    "roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "description": "The allowed set of user roles the application's methods and views can specify.",
+        "pattern": "^[a-z-A-Z0-9][.-_a-z-A-Z0-9]*$"
+      }
+    },
+    "methods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Object describing an application's method and its API.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Method's name. Must match prototype function name defined in JavaScript source.",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9]*$"
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Text that will be displayed in a workflow task's properties dialog."
+          },
+          "deprecated": {
+            "type": "boolean",
+            "description": "If true, method is deprecated.",
+            "default": false
+          },
+          "summary": {
+            "type": "string",
+            "description": "A brief explanation of the method. Format as a title; capitalize all major words. Should not contain abbreviations or words that serve no purpose.",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "description": "Explain the method's purpose: what does it do, what problem does it solve, and why was it created. Properly formatted as a paragraph. Capital the first letter of Pronghorn terminology, for example Job, Task, Catalog Store, etc. Avoid abbreviations, such as config; type configuration instead. Define acronyms before first use, such as Network Element Driver (NED)."
+          },
+          "input": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Object describing a parameter.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Parameter's name. Must match parameter's name defined in JavaScript source.",
+                  "pattern": "^[a-zA-Z0-9][.-_a-zA-Z0-9]*$"
+                },
+                "type": {
+                  "enum": [
+                    "object",
+                    "array",
+                    "boolean",
+                    "number",
+                    "string",
+                    "enum",
+                    "*"
+                  ]
+                },
+                "enumerals": {
+                  "type": "array",
+                  "description": "Only used when type is enum.",
+                  "items": {
+                    "type": "string",
+                    "description": "An allowed value"
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Describe the parameter's purpose. If an object, include a JSON schema representation. If method can be called from a web API, is the parameter passed in the URL or a POST body?"
+                },
+                "info": {
+                  "type": "string",
+                  "description": "A tool tip. Include references to other APIs that return the parameter."
+                },
+                "required": {
+                  "type": "boolean",
+                  "description": "When true, parameter is mandatory.",
+                  "default": true
+                }
+              },
+              "required": [
+                "name",
+                "type",
+                "description"
+              ]
+            }
+          },
+          "output": {
+            "type": "object",
+            "description": "Describes the returned data.",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The outgoing variable name when method is called by a Workflow Job.",
+                "pattern": "^[a-z-A-Z0-9][.-_a-z-A-Z0-9]*$"
+              },
+              "type": {
+                "enum": [
+                  "object",
+                  "array",
+                  "boolean",
+                  "number",
+                  "string",
+                  "enum",
+                  "*"
+                ]
+              },
+              "enumerals": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "An allowed value"
+                }
+              },
+              "description": {
+                "type": "string",
+                "description": "Returned value's description."
+              }
+            },
+            "required": [
+              "name",
+              "type",
+              "description"
+            ]
+          },
+          "task": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, method can be called by a Workflow Job."
+          },
+          "route": {
+            "type": "object",
+            "description": "When defined, enables a web API for the method.",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "Final part of URL appended after namespace.",
+                "pattern": "^(/[a-zA-Z0-9%][.-_a-zA-Z0-9%]*)+(/[:][.a-zA-Z0-9%][-_a-zA-Z0-9%]*)*$"
+              },
+              "verb": {
+                "enum": [
+                  "POST",
+                  "GET",
+                  "DELETE",
+                  "PUT"
+                ],
+                "description": "HTTP request type."
+              }
+            }
+          },
+          "roles": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "description": "The allowed set of user roles for this method.",
+              "pattern": "^[a-z-A-Z0-9][.-_a-z-A-Z0-9]*$"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "summary",
+          "description",
+          "input",
+          "output",
+          "roles"
+        ]
+      }
+    },
+    "views": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Object describing an application's views.",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Final part of URL appended after namespace.",
+            "pattern": "(^/$)|(^(/([-a-zA-Z0-9@:%._+~#=]{2,256}))+$)"
+          },
+          "deprecated": {
+            "type": "boolean",
+            "description": "If true, view is deprecated.",
+            "default": false
+          },
+          "title": {
+            "type": "string",
+            "description": "Application name when type view. Default task name if type task. Format as a title; capitalize all major words. Should not contain abbreviations or words that serve no purpose.",
+            "maxLength": 50
+          },
+          "template": {
+            "type": "string",
+            "description": "Relative file reference to the view's HTML file. Relative from the application's views directory. Can be an HTML or Jade file.",
+            "pattern": "^(./|/)?[a-zA-Z]([._-]|[a-zA-Z0-9])*(/[a-zA-Z]([._-]|[a-zA-Z0-9])*)*[.](jade|html)$"
+          },
+          "roles": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "description": "The allowed set of user roles for this view.",
+              "pattern": "^[a-z-A-Z0-9][.-_a-z-A-Z0-9]*$"
+            }
+          },
+          "type": {
+            "enum": [
+              "task",
+              "view",
+              "dialog"
+            ],
+            "description": "Manual workflow tasks are type task. Applications are type view. Modal application views are type dialog."
+          },
+          "variables": {
+            "type": "object",
+            "description": "A skeleton object holding the view's parameters and return data.",
+            "properties": {
+              "incoming": {
+                "type": "object",
+                "description": "A skeleton object holding the view's parameters.",
+                "properties": {
+                  "^[a-zA-Z]": {
+                    "type": "null",
+                    "description": "A parameter's name as the key and a null value."
+                  }
+                }
+              },
+              "outgoing": {
+                "type": "object",
+                "description": "A skeleton object holding the view's returned data."
+              }
+            },
+            "required": [
+              "incoming",
+              "outgoing"
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "template",
+          "roles",
+          "type"
+        ]
+      }
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "encrypted",
+    "roles"
+  ]
+}

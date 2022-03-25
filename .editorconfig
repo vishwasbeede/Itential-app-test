@@ -1,0 +1,9 @@
+[*]
+end_of_line = lf
+charset = utf-8
+indent_style = space
+tab_width = 2
+
+# Allow trailing spaces in markdown as two spaces at the end of a line is used to insert a line break
+[*.md]
+trim_trailing_whitespace = false
